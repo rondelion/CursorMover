@@ -1,0 +1,482 @@
+{
+ "Header": {
+  "Type": "A",
+  "Name": "CursorMover",
+  "Base": "CursorMover",
+  "Comment": "An agent that acts with a cursor"
+ },
+ "Modules": [
+  {
+   "Name": "CognitiveArchitecture",
+   "Comment": "Agent:Move the gaze to the most salient part",
+   "SubModules": [
+    "Periphery2Saliency",
+    "PriorityMap2Gaze",
+    "ObjectRecognizer",
+    "CursorActor",
+    "ActionOutput",
+    "FoveaDiffPredictor",
+    "SurpriseReward"
+   ],
+   "Ports": [
+    {
+     "Name": "observation",
+     "Type": "Input",
+     "Shape": [
+      58800
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "action",
+     "Type": "Output",
+     "Shape": [
+      19
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "Periphery2Saliency",
+   "Comment": "Periphery vision to saliency:Generates the saliency map",
+   "ImplClass": "Vision1.Periphery2Saliency",
+   "Ports": [
+    {
+     "Name": "observation",
+     "Type": "Input",
+     "Shape": [
+      58800
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "saliency_map",
+     "Type": "Output",
+     "Shape": [
+      25
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "PriorityMap2Gaze",
+   "Comment": "Saliency to gaze control:Generates gaze control signals from the saliency map",
+   "ImplClass": "Vision1.PriorityMap2Gaze",
+   "Ports": [
+    {
+     "Name": "saliency_map",
+     "Type": "Input",
+     "Shape": [
+      25
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "action",
+     "Type": "Output",
+     "Shape": [
+      9
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "ObjectRecognizer",
+   "Comment": "Object recognizer:Compress visual input into latent variables",
+   "ImplClass": "CursorMover.ObjectRecognizer",
+   "Ports": [
+    {
+     "Name": "observation",
+     "Type": "Input",
+     "Shape": [
+      58800
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "object_lv",
+     "Type": "Output",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "FoveaDiffPredictor",
+   "Comment": "Fovea diff predictor:Predict the saliency map",
+   "ImplClass": "CursorMover.FoveaDiffPredictor",
+   "Ports": [
+    {
+     "Name": "cursor_action",
+     "Type": "Input",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "gaze_shift",
+     "Type": "Input",
+     "Shape": [
+      9
+     ]
+    },
+    {
+     "Name": "object_lv",
+     "Type": "Input",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "prediction_error",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "SurpriseReward",
+   "Comment": "Surprise reward:Compute reward as change x surprise",
+   "ImplClass": "CursorMover.SurpriseReward",
+   "Ports": [
+    {
+     "Name": "object_lv",
+     "Type": "Input",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "prediction_error",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "reward",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "CursorActor",
+   "Comment": "Cursor actor:Determine cursor action",
+   "ImplClass": "CBT1cCA_2.CBT1Component",
+   "Ports": [
+    {
+     "Name": "observation",
+     "Type": "Input",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "reward",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "action",
+     "Type": "Output",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  },
+  {
+   "Name": "ActionOutput",
+   "Comment": "Action output:Integrate gaze and cursor action",
+   "ImplClass": "CursorMover.ActionOutput",
+   "Ports": [
+    {
+     "Name": "cursor_action",
+     "Type": "Input",
+     "Shape": [
+      10
+     ]
+    },
+    {
+     "Name": "gaze_shift",
+     "Type": "Input",
+     "Shape": [
+      9
+     ]
+    },
+    {
+     "Name": "token_in",
+     "Type": "Input",
+     "Shape": [
+      1
+     ]
+    },
+    {
+     "Name": "action",
+     "Type": "Output",
+     "Shape": [
+      19
+     ]
+    },
+    {
+     "Name": "token_out",
+     "Type": "Output",
+     "Shape": [
+      1
+     ]
+    }
+   ]
+  }
+ ],
+ "Connections": [
+  {
+   "Name": "CognitiveArchitecture-Periphery2Saliency",
+   "FromModule": "CognitiveArchitecture",
+   "FromPort": "observation",
+   "ToModule": "Periphery2Saliency",
+   "ToPort": "observation"
+  },
+  {
+   "Name": "CognitiveArchitecture-Periphery2Saliency",
+   "FromModule": "CognitiveArchitecture",
+   "FromPort": "token_in",
+   "ToModule": "Periphery2Saliency",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "CognitiveArchitecture-ObjectRecognizer",
+   "FromModule": "CognitiveArchitecture",
+   "FromPort": "observation",
+   "ToModule": "ObjectRecognizer",
+   "ToPort": "observation"
+  },
+  {
+   "Name": "CognitiveArchitecture-ObjectRecognizer",
+   "FromModule": "CognitiveArchitecture",
+   "FromPort": "token_in",
+   "ToModule": "ObjectRecognizer",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "Periphery2Saliency-PriorityMap2Gaze",
+   "FromModule": "Periphery2Saliency",
+   "FromPort": "saliency_map",
+   "ToModule": "PriorityMap2Gaze",
+   "ToPort": "saliency_map"
+  },
+  {
+   "Name": "Periphery2Saliency-PriorityMap2Gaze",
+   "FromModule": "Periphery2Saliency",
+   "FromPort": "token_out",
+   "ToModule": "PriorityMap2Gaze",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "ObjectRecognizer-CursorActor",
+   "FromModule": "ObjectRecognizer",
+   "FromPort": "object_lv",
+   "ToModule": "CursorActor",
+   "ToPort": "observation"
+  },
+  {
+   "Name": "ObjectRecognizer-FoveaDiffPredictor",
+   "FromModule": "ObjectRecognizer",
+   "FromPort": "object_lv",
+   "ToModule": "FoveaDiffPredictor",
+   "ToPort": "object_lv"
+  },
+  {
+   "Name": "ObjectRecognizer-SurpriseReward",
+   "FromModule": "ObjectRecognizer",
+   "FromPort": "object_lv",
+   "ToModule": "SurpriseReward",
+   "ToPort": "object_lv"
+  },
+  {
+   "Name": "PriorityMap2Gaze-FoveaDiffPredictor",
+   "FromModule": "PriorityMap2Gaze",
+   "FromPort": "action",
+   "ToModule": "FoveaDiffPredictor",
+   "ToPort": "gaze_shift"
+  },
+  {
+   "Name": "PriorityMap2Gaze-FoveaDiffPredictor",
+   "FromModule": "PriorityMap2Gaze",
+   "FromPort": "token_out",
+   "ToModule": "FoveaDiffPredictor",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "PriorityMap2Gaze-ActionOutput",
+   "FromModule": "PriorityMap2Gaze",
+   "FromPort": "action",
+   "ToModule": "ActionOutput",
+   "ToPort": "gaze_shift"
+  },
+  {
+   "Name": "CursorActor-FoveaDiffPredictor",
+   "FromModule": "CursorActor",
+   "FromPort": "action",
+   "ToModule": "FoveaDiffPredictor",
+   "ToPort": "cursor_action"
+  },
+  {
+   "Name": "CursorActor-ActionOutput",
+   "FromModule": "CursorActor",
+   "FromPort": "action",
+   "ToModule": "ActionOutput",
+   "ToPort": "cursor_action"
+  },
+  {
+   "Name": "CursorActor-ActionOutput",
+   "FromModule": "CursorActor",
+   "FromPort": "token_out",
+   "ToModule": "ActionOutput",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "ActionOutput-CognitiveArchitecture",
+   "FromModule": "ActionOutput",
+   "FromPort": "action",
+   "ToModule": "CognitiveArchitecture",
+   "ToPort": "action"
+  },
+  {
+   "Name": "ActionOutput-CognitiveArchitecture",
+   "FromModule": "ActionOutput",
+   "FromPort": "token_out",
+   "ToModule": "CognitiveArchitecture",
+   "ToPort": "token_out"
+  },
+  {
+   "Name": "FoveaDiffPredictor-SurpriseReward",
+   "FromModule": "FoveaDiffPredictor",
+   "FromPort": "prediction_error",
+   "ToModule": "SurpriseReward",
+   "ToPort": "prediction_error"
+  },
+  {
+   "Name": "FoveaDiffPredictor-SurpriseReward",
+   "FromModule": "FoveaDiffPredictor",
+   "FromPort": "token_out",
+   "ToModule": "SurpriseReward",
+   "ToPort": "token_in"
+  },
+  {
+   "Name": "SurpriseReward-CursorActor",
+   "FromModule": "SurpriseReward",
+   "FromPort": "reward",
+   "ToModule": "CursorActor",
+   "ToPort": "reward"
+  },
+    {
+   "Name": "SurpriseReward-CursorActor",
+   "FromModule": "SurpriseReward",
+   "FromPort": "token_out",
+   "ToModule": "CursorActor",
+   "ToPort": "token_in"
+  }
+ ]
+}

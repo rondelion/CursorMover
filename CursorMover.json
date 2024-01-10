@@ -1,0 +1,107 @@
+{
+  "env": {
+    "name": "CursorMoverEnv-v0",
+    "stage_size": 3,
+    "grid_size": 28,
+    "cardinality": 2,
+    "render_wait": 1000,
+    "episode_length": 10,
+    "center_dot": true,
+    "image_path": "env/28×28/"
+  },
+  "agent": {
+    "Periphery2Saliency": {
+      "edge_detection": "Laplacian",
+      "weights": [5, 1, 2]
+    },
+    "PriorityMap2Gaze": {
+      "decrement_rate": 0.5,
+      "threshold": 2,
+      "noise_max": 1
+    },
+    "ObjectRecognizer": {
+      "model_file": "fovea_VAE.pt",
+      "no_cuda": true,
+      "type": "neu_beta",
+      "model_config": {
+        "learn_mode": false,
+        "use_cuda": true,
+        "epochs": 1000,
+        "batch_size": 5,
+        "log_interval": 20,
+        "save_model": true,
+        "optimizer": "SGD",
+        "learning_rate": 0.1,
+        "rec_loss": "binary_cross_entropy",
+        "encoder_act_func": "tanh",
+        "decoder_act_func": "tanh",
+        "decoder_pred_func": "sigmoid",
+        "n_classes": null,
+        "z_dim": 10,
+        "encoder_hidden_dim": 600,
+        "decoder_hidden_dim": 600,
+        "encoder_name": "LinearEncoder",
+        "decoder_name": "LinearDecoder",
+        "vae_name": "BetaVAE",
+        "beta": 2.0
+      }
+    },
+    "FoveaDiffPredictor": {
+      "type": "simple",
+      "learn_mode": false,
+      "use_cuda": true,
+      "epochs": 100,
+      "batch_size": 5,
+      "log_interval": 5,
+      "save_model": true,
+      "n_classes": null,
+      "hidden_dim": 8,
+      "threshold": 10.0,
+      "model_file": "FoveaDiffPredictor.pt"
+    },
+    "SurpriseReward": {
+      "threshold": 0.5
+    },
+    "CursorActor": {
+      "n_action": 8,
+      "init_action": false,
+      "use_success_rate": true,
+      "sr_cycle": 100,
+      "init_success_rate": 0.5,
+      "learning_mode": "rl",
+      "neocortex_learn": true,
+      "dump_learn": false,
+      "learning_dump": "RC_learning.dmp",
+      "use_dump": false,
+      "one_go_per_episode": false,
+      "go_cost": 0.04,
+      "action_threshold": 0.5,
+      "reward_threshold": 0.5,
+      "blind": false,
+      "BG": {
+        "threshold": 0.01,
+        "disinhibition_length": 2,
+        "rl_agent": "dqn",
+        "rl_batch_size": 10,
+        "accumulation_length": 1,
+        "state_type": "float",
+        "model_folder": "BG_model"
+      },
+      "NeoCortex": {
+        "Accumulator": {
+          "attenuation": 0.4,
+          "input_weight": 0.5,
+          "noise_weight": 0.5
+        },
+        "ActionPredictor": {
+          "intra_dim": 200,
+          "batch_size": 5,
+          "loss_accum_rate": 0.05,
+          "lr": 0.5,
+          "epochs": 100,
+          "model_file": "ActionPredictor.pt"
+        }
+      }
+    }
+  }
+}
