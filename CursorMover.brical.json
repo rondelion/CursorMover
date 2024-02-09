@@ -248,7 +248,7 @@
   {
    "Name": "CursorActor",
    "Comment": "Cursor actor:Determine cursor action",
-   "ImplClass": "CBT1cCA_2.CBT1Component",
+   "ImplClass": "CBT1cCA_3.CBT1Component",
    "Ports": [
     {
      "Name": "observation",
