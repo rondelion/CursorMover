@@ -24,10 +24,12 @@ The gaze is directed to the most salient part in the visual field.  The mechanis
 The cursor is controlled by a [corico-BG-loop](https://en.wikipedia.org/wiki/Cortico-basal_ganglia-thalamo-cortical_loop) model ([MinimalCtxBGA](https://github.com/rondelion/MinimalCtxBGA)).   When the cursor overlaps an object, the object may be dragged.
 
 #### Agent architecture
+<p align="center">
+<img src="/CursorMoverArchitecture.png" width="500px"/><br><strong>Fig.2</strong><br>
 
 
 ## How to Install
-* Clone this repository, [Vision1](https://github.com/rondelion/Vision1),and [MinimalCtxBGA](https://github.com/rondelion/MinimalCtxBGA).
+* Clone this repository, [Vision1](https://github.com/rondelion/Vision1), [AEPredictor](https://github.com/rondelion/AEPredictor), and [MinimalCtxBGA](https://github.com/rondelion/MinimalCtxBGA).
 
 * Install [BriCA](https://github.com/wbap/BriCA1) and [BriCAL](https://github.com/wbap/BriCAL).
 
