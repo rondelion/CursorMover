@@ -33,7 +33,7 @@ The cursor is controlled by a [corico-BG-loop](https://en.wikipedia.org/wiki/Cor
 
 * Install [BriCA](https://github.com/wbap/BriCA1) and [BriCAL](https://github.com/wbap/BriCAL).
 
-* Install [Gymnasium](https://gymnasium.farama.org), cv2 (OpenCV for Vision1), ~~TensorForce,~~ and [PyGame](https://www.pygame.org/news).
+* Install [Gymnasium](https://gymnasium.farama.org), cv2 (OpenCV for Vision1), ~~TensorForce,~~ [PyGame](https://www.pygame.org/news), and [neu_vae](https://github.com/arpastrana/neu_vae/) ([article](https://wandb.ai/arpastrana/beta_vae/reports/Disentangling-Variational-Autoencoders--VmlldzozNDQ3MDk)).
 
 * Add python paths to the installed modules.
 
